@@ -1,5 +1,5 @@
 use bcm2835_rs as bcm2835;
-
+p
 fn main() {
 	if bcm2835::init() == 0 {
 		return;

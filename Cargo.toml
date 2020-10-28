@@ -7,5 +7,5 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bcm2835-sys = {path = "../bcm2835-sys"}
+bcm2835-sys = {path = "bcm2835-sys"}
 enum_primitive = "0.1.1"
