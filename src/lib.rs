@@ -1,5 +1,6 @@
 use bcm2835_sys::*;
 use enum_primitive::*;
+use std::ffi::CString;
 
 pub const HIGH : u8 = 0x1;
 pub const LOW : u8 = 0x0;
@@ -35,7 +36,7 @@ enum_from_primitive! {
         Alt3  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_ALT3,
         Alt4  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_ALT4,
         Alt5  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_ALT5,
-        //MASK: bcm2835FunctionSelect_BCM2835_GPIO_FSEL_MASK,
+        //Mask: bcm2835FunctionSelect_BCM2835_GPIO_FSEL_MASK,
     }
 }
 
@@ -506,10 +507,23 @@ pub fn spi_set_chip_select_polarity(cs : SPIChipSelect, active : u8) {
     }
 }
 
-pub fn spi_transfer(value : u8) {
+pub fn spi_transfer(value : u8) -> u8{
     unsafe {
-        bcm2835_spi_transfer(value);
+        bcm2835_spi_transfer(value)
     }
 }
+
+pub fn spi_transfernb(tbuf : &[u8]) -> String {
+    unsafe {
+        let tbuf_raw = CString::new(tbuf).unwrap().into_raw();
+        let rbuf_raw = CString::new(tbuf).unwrap().into_raw();
+
+        bcm2835_spi_transfernb(tbuf_raw, rbuf_raw, tbuf.len() as u32);
+        let rbuf_cstr = CString::from_raw(rbuf_raw);
+
+        return rbuf_cstr.into_string().unwrap();
+    }
+}
+
 
 
