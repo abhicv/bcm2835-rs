@@ -67,23 +67,32 @@ enum_from_primitive! {
 #[repr(u32)]
 
     pub enum RPiGPIO {
-        Pin03 = RPiGPIOPin_RPI_GPIO_P1_03,
-        Pin05 = RPiGPIOPin_RPI_GPIO_P1_05,
-        Pin07 = RPiGPIOPin_RPI_GPIO_P1_07,
-        Pin08 = RPiGPIOPin_RPI_GPIO_P1_08,
-        Pin10 = RPiGPIOPin_RPI_GPIO_P1_10,
-        Pin11 = RPiGPIOPin_RPI_GPIO_P1_11,
-        Pin12 = RPiGPIOPin_RPI_GPIO_P1_12,
-        Pin13 = RPiGPIOPin_RPI_GPIO_P1_13,
-        Pin15 = RPiGPIOPin_RPI_GPIO_P1_15,
-        Pin16 = RPiGPIOPin_RPI_GPIO_P1_16,
-        Pin18 = RPiGPIOPin_RPI_GPIO_P1_18,
-        Pin19 = RPiGPIOPin_RPI_GPIO_P1_19,
-        Pin21 = RPiGPIOPin_RPI_GPIO_P1_21,
-        Pin22 = RPiGPIOPin_RPI_GPIO_P1_22,
-        Pin23 = RPiGPIOPin_RPI_GPIO_P1_23,
-        Pin24 = RPiGPIOPin_RPI_GPIO_P1_24,
-        Pin26 = RPiGPIOPin_RPI_GPIO_P1_26,
+        Pin03 = RPiGPIOPin_RPI_V2_GPIO_P1_03,
+        Pin05 = RPiGPIOPin_RPI_V2_GPIO_P1_05,
+        Pin07 = RPiGPIOPin_RPI_V2_GPIO_P1_07,
+        Pin08 = RPiGPIOPin_RPI_V2_GPIO_P1_08,
+        Pin10 = RPiGPIOPin_RPI_V2_GPIO_P1_10,
+        Pin11 = RPiGPIOPin_RPI_V2_GPIO_P1_11,
+        Pin12 = RPiGPIOPin_RPI_V2_GPIO_P1_12,
+        Pin13 = RPiGPIOPin_RPI_V2_GPIO_P1_13,
+        Pin15 = RPiGPIOPin_RPI_V2_GPIO_P1_15,
+        Pin16 = RPiGPIOPin_RPI_V2_GPIO_P1_16,
+        Pin18 = RPiGPIOPin_RPI_V2_GPIO_P1_18,
+        Pin19 = RPiGPIOPin_RPI_V2_GPIO_P1_19,
+        Pin21 = RPiGPIOPin_RPI_V2_GPIO_P1_21,
+        Pin22 = RPiGPIOPin_RPI_V2_GPIO_P1_22,
+        Pin23 = RPiGPIOPin_RPI_V2_GPIO_P1_23,
+        Pin24 = RPiGPIOPin_RPI_V2_GPIO_P1_24,
+        Pin26 = RPiGPIOPin_RPI_V2_GPIO_P1_26,
+        Pin29 = RPiGPIOPin_RPI_V2_GPIO_P1_29,
+        Pin31 = RPiGPIOPin_RPI_V2_GPIO_P1_31,
+        Pin32 = RPiGPIOPin_RPI_V2_GPIO_P1_32,
+        Pin33 = RPiGPIOPin_RPI_V2_GPIO_P1_33,
+        Pin35 = RPiGPIOPin_RPI_V2_GPIO_P1_35,
+        Pin36 = RPiGPIOPin_RPI_V2_GPIO_P1_36,
+        Pin37 = RPiGPIOPin_RPI_V2_GPIO_P1_37,
+        Pin38 = RPiGPIOPin_RPI_V2_GPIO_P1_38,
+        Pin40 = RPiGPIOPin_RPI_V2_GPIO_P1_40,
     }
 }
 
@@ -513,6 +522,7 @@ pub fn spi_transfer(value : u8) -> u8{
     }
 }
 
+/*
 pub fn spi_transfernb(tbuf : &[u8]) -> String {
     unsafe {
         let tbuf_raw = CString::new(tbuf).unwrap().into_raw();
@@ -524,6 +534,31 @@ pub fn spi_transfernb(tbuf : &[u8]) -> String {
         return rbuf_cstr.into_string().unwrap();
     }
 }
+*/
 
+//PWM
+pub fn pwm_set_clock(divisor : PWMClockDivider) {
+    unsafe {
+        bcm2835_pwm_set_clock(divisor as u32);
+    }
+}
+
+pub fn pwm_set_mode(channel : u8, markspace : u8, enabled : u8) {
+    unsafe {
+        bcm2835_pwm_set_mode(channel, markspace, enabled);
+    }
+}
+
+pub fn pwm_set_range(channel : u8, range : u32) {
+    unsafe {
+        bcm2835_pwm_set_range(channel, range);
+    }
+}
+
+pub fn pwm_set_data(channel : u8, data : u32) {
+    unsafe {
+        bcm2835_pwm_set_data(channel, data);
+    }
+}
 
 
