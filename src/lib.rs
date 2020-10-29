@@ -27,7 +27,7 @@ enum_from_primitive! {
 #[derive(Debug, Copy, Clone, PartialEq)]
 #[repr(u32)]
 
-    pub enum GPIOFunctionSelect {
+    pub enum GPIOFSel {
         Input  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_INPT,
         Output  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_OUTP,
         Alt0  = bcm2835FunctionSelect_BCM2835_GPIO_FSEL_ALT0,
@@ -67,23 +67,23 @@ enum_from_primitive! {
 #[repr(u32)]
 
     pub enum RPiGPIO {
-        P03 = RPiGPIOPin_RPI_GPIO_P1_03,
-        P05 = RPiGPIOPin_RPI_GPIO_P1_05,
-        P07 = RPiGPIOPin_RPI_GPIO_P1_07,
-        P08 = RPiGPIOPin_RPI_GPIO_P1_08,
-        P10 = RPiGPIOPin_RPI_GPIO_P1_10,
-        P11 = RPiGPIOPin_RPI_GPIO_P1_11,
-        P12 = RPiGPIOPin_RPI_GPIO_P1_12,
-        P13 = RPiGPIOPin_RPI_GPIO_P1_13,
-        P15 = RPiGPIOPin_RPI_GPIO_P1_15,
-        P16 = RPiGPIOPin_RPI_GPIO_P1_16,
-        P18 = RPiGPIOPin_RPI_GPIO_P1_18,
-        P19 = RPiGPIOPin_RPI_GPIO_P1_19,
-        P21 = RPiGPIOPin_RPI_GPIO_P1_21,
-        P22 = RPiGPIOPin_RPI_GPIO_P1_22,
-        P23 = RPiGPIOPin_RPI_GPIO_P1_23,
-        P24 = RPiGPIOPin_RPI_GPIO_P1_24,
-        P26 = RPiGPIOPin_RPI_GPIO_P1_26,
+        Pin03 = RPiGPIOPin_RPI_GPIO_P1_03,
+        Pin05 = RPiGPIOPin_RPI_GPIO_P1_05,
+        Pin07 = RPiGPIOPin_RPI_GPIO_P1_07,
+        Pin08 = RPiGPIOPin_RPI_GPIO_P1_08,
+        Pin10 = RPiGPIOPin_RPI_GPIO_P1_10,
+        Pin11 = RPiGPIOPin_RPI_GPIO_P1_11,
+        Pin12 = RPiGPIOPin_RPI_GPIO_P1_12,
+        Pin13 = RPiGPIOPin_RPI_GPIO_P1_13,
+        Pin15 = RPiGPIOPin_RPI_GPIO_P1_15,
+        Pin16 = RPiGPIOPin_RPI_GPIO_P1_16,
+        Pin18 = RPiGPIOPin_RPI_GPIO_P1_18,
+        Pin19 = RPiGPIOPin_RPI_GPIO_P1_19,
+        Pin21 = RPiGPIOPin_RPI_GPIO_P1_21,
+        Pin22 = RPiGPIOPin_RPI_GPIO_P1_22,
+        Pin23 = RPiGPIOPin_RPI_GPIO_P1_23,
+        Pin24 = RPiGPIOPin_RPI_GPIO_P1_24,
+        Pin26 = RPiGPIOPin_RPI_GPIO_P1_26,
     }
 }
 
@@ -257,7 +257,7 @@ pub fn peri_set_bits(paddr : &mut u32, value : u32, mask : u32) {
     }
 }
 
-pub fn gpio_fsel(pin : RPiGPIO, mode : GPIOFunctionSelect) {
+pub fn gpio_fsel(pin : RPiGPIO, mode : GPIOFSel) {
     unsafe {
         bcm2835_gpio_fsel(pin as u8, mode as u8);
     }

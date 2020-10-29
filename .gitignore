@@ -2,3 +2,4 @@
 Cargo.lock
 /bcm2835-sys/target
 /bcm2835-sys/Cargo.lock
+.gitignore

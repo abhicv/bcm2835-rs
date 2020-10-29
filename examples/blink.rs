@@ -1,15 +1,15 @@
 
 use bcm2835_rs as bcm2835;
-use bcm2835_rs::{RPiGPIO, GPIOFunctionSelect, HIGH, LOW};
+use bcm2835_rs::{RPiGPIO, GPIOFSel, HIGH, LOW};
 
 fn main() {
 	if bcm2835::init() == 0 {
 		return;
 	}
 
-	let LED = RPiGPIO::P11; //pin 17 of raspberry pi
+	let LED = RPiGPIO::Pin11; //pin 17 of Raspberry PI
 
-	bcm2835::gpio_fsel(LED, GPIOFunctionSelect::Output);
+	bcm2835::gpio_fsel(LED, GPIOFSel::Output);
 
 	loop {
 		bcm2835::gpio_write(LED, HIGH);
