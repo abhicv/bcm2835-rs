@@ -8,10 +8,14 @@ use bcm2835_rs as bcm2835;
 use bcm2835_rs::{RPiGPIO, GPIOFSel, PWMClockDivider};
 
 fn main() {
-    if bcm2835::init() == 0 {
-    	println!("Could not initialize bcm2835");
-	    return;
-    }
+    let init_status =  bcm2835::init();
+	match init_status {
+		Err(0) => {
+			panic!("bcm2835 initialization failed");
+		},
+		_ => ()
+	}
+
 
     // PWM output on RPi Plug P1 pin 12 (which is GPIO pin 18) in alt fun 5.
     let pin = RPiGPIO::Pin12;
@@ -50,5 +54,5 @@ fn main() {
         bcm2825::delay(1);
     }
 
-    bcm2835::close();
+    bcm2835::close().unwrap();
 }

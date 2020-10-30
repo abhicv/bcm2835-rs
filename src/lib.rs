@@ -184,35 +184,35 @@ enum_from_primitive! {
 #[repr(u32)]
 
     pub enum PWMClockDivider {
-        Divider2048  = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_2048,
-        Divider1024  = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_1024,
-        Divider512   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_512,
-        Divider256   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_256,
-        Divider128   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_128,
-        Divider64    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_64,
-        Divider32    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_32,
-        Divider16    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_16,
-        Divider8     = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_8,
-        Divider4     = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_4,
-        Divider2     = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_2,
-        Divider1     = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_1,
+        Divider2048 = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_2048,
+        Divider1024 = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_1024,
+        Divider512  = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_512,
+        Divider256  = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_256,
+        Divider128  = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_128,
+        Divider64   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_64,
+        Divider32   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_32,
+        Divider16   = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_16,
+        Divider8    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_8,
+        Divider4    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_4,
+        Divider2    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_2,
+        Divider1    = bcm2835PWMClockDivider_BCM2835_PWM_CLOCK_DIVIDER_1,
     }
 }
 
-pub fn init() -> u8 {
+pub fn init() -> Result<u8, u8> {
     unsafe {
         match bcm2835_init() {
-            0 => 0,
-            _ => 1,
+            0 => Err(0),
+            _ => Ok(1),
         }
     }
 }
 
-pub fn close() -> u8 {
+pub fn close() -> Result<u8, u8> {
     unsafe {
         match bcm2835_close() {
-            0 => 0,
-            _ => 1,
+            0 => Err(0),
+            _ => Ok(1),
         }
     }
 }
@@ -465,11 +465,11 @@ pub fn gpio_get_pud(pin : RPiGPIO) -> Option<PudControl> {
     }
 }
 
-pub fn spi_begin() -> u8 {
+pub fn spi_begin() -> Result<u8, u8> {
     unsafe {
         match bcm2835_spi_begin() {
-            0 => 0,
-            _ => 1,
+            0 => Err(0),
+            _ => Ok(1),
         }
     }
 }

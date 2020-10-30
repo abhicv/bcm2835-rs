@@ -6,15 +6,21 @@ use bcm2835::{SPIBitOrder, SPIMode, SPIChipSelect, SPIClockDivider, LOW};
 
 fn main() {
 
-	if bcm2835::init() == 0 {
-        println!("bcm2835 init failed. Are you running as root?");
-		return;
-    }
+	let init_status =  bcm2835::init();
+	match init_status {
+		Err(0) => {
+			panic!("bcm2835 initialization failed!");
+		},
+		_ => ()
+	}
 
-    if bcm2835::spi_begin() == 0 {
-        println!("bcm2835 spi begin failed. Are you running as root??\n");
-        return;
-    }
+    let spi_begin_status =  bcm2835::spi_begin();
+	match spi_begin_status {
+		Err(0) => {
+			panic!("SPI begin failed! Are you running as root??");
+		},
+		_ => ()
+	}
 
    	bcm2835::spi_set_bit_order(SPIBitOrder::LsbFirst);                  // The default
     bcm2835::spi_set_data_mode(SPIMode::Mode0);                         // The default
@@ -34,5 +40,5 @@ fn main() {
 	}
 
 	bcm2835::spi_end();
-	bcm2835::close();
+	bcm2835::close().unwrap();
 }

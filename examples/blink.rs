@@ -5,8 +5,12 @@ use bcm2835_rs as bcm2835;
 use bcm2835_rs::{RPiGPIO, GPIOFSel, HIGH, LOW};
 
 fn main() {
-	if bcm2835::init() == 0 {
-		return;
+	let init_status =  bcm2835::init();
+	match init_status {
+		Err(0) => {
+			panic!("bcm2835 initialization failed");
+		},
+		_ => ()
 	}
 
 	// Blinks on RPi Plug P1 pin 11 (which is GPIO pin 17)
@@ -31,6 +35,6 @@ fn main() {
 		bcm2835::delay(500);
 	}
 
-	bcm2835::close();
+	bcm2835::close().unwrap();
 	return;
 }
