@@ -199,6 +199,13 @@ enum_from_primitive! {
     }
 }
 
+/// Initialise the library by opening /dev/mem (if you are root)
+/// or /dev/gpiomem (if you are not)
+/// and getting pointers to the
+/// internal memory for BCM 2835 device registers. You must call this (successfully)
+///
+/// # Return
+/// Returns Ok(1) on success and Err(0) on failure.
 pub fn init() -> Result<u8, u8> {
     unsafe {
         match bcm2835_init() {
@@ -208,6 +215,10 @@ pub fn init() -> Result<u8, u8> {
     }
 }
 
+/// Close the library, deallocating any allocated memory and closing /dev/mem
+///
+/// # Return
+/// Ok(1) if successful else Err(0)
 pub fn close() -> Result<u8, u8> {
     unsafe {
         match bcm2835_close() {
@@ -217,18 +228,36 @@ pub fn close() -> Result<u8, u8> {
     }
 }
 
+/// Sets the debug level of the library.
+/// A value of 1 prevents mapping to /dev/mem, and makes the library print out
+/// what it would do, rather than accessing the GPIO registers.
+/// A value of 0, the default, causes normal operation.
+/// Call this before calling bcm2835::init();
+///
+/// # Arguments
+/// * `debug` - 1 means debug
 pub fn set_debug(debug : u8) {
     unsafe {
         bcm2835_set_debug(debug);
     }
 }
 
+/// Returns the version number of the library, same as BCM2835_VERSION
+/// # Return
+/// the current library version number
 pub fn version() -> u32 {
     unsafe {
         bcm2835_version()
     }
 }
 
+/// Gets the base of a register
+///
+/// # Arguments
+/// * `regbase` - [RegisterBase](enum.RegisterBase.html)
+///
+/// # Return
+/// the register base
 pub fn regbase(regbase : RegisterBase) -> &'static mut u32 {
     unsafe {
         let r = bcm2835_regbase(regbase as u8);
@@ -236,6 +265,15 @@ pub fn regbase(regbase : RegisterBase) -> &'static mut u32 {
     }
 }
 
+/// Reads 32 bit value from a peripheral address WITH a memory barrier before and after each read.
+/// This is safe, but slow.  The MB before protects this read from any in-flight reads that didn't
+/// use a MB.  The MB after protects subsequent reads from another peripheral.
+///
+/// # Arguments
+/// * `paddr` - Physical address to read from. See BCM2835_GPIO_BASE etc.
+///
+/// # Return
+/// the value read from the 32 bit register
 pub fn peri_read(paddr : &mut u32) -> u32 {
     unsafe {
         bcm2835_peri_read(paddr)
