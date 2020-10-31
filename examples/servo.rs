@@ -32,12 +32,17 @@ fn main() {
     bcm2835::pwm_set_range(pwm_channel, range);
 
     loop {
-        bcm2835::pwm_set_data(pwm_channel, 200); //min 5% duty cycle
-        bcm2835::delay(200);
-        bcm2835::pwm_set_data(pwm_channel, 450); //mid 7.5% duty cycle
-        bcm2835::delay(200);
-        bcm2835::pwm_set_data(pwm_channel, 600); //max 10% duty cycle
-        bcm2835::delay(200);
+        bcm2835::pwm_set_data(pwm_channel, 100); //min 5% duty cycle calculated 200 but tested 100
+        bcm2835::delay(500);
+        
+	bcm2835::pwm_set_data(pwm_channel, 450); //mid 7.5% duty cycle calculated and tested same
+        bcm2835::delay(500);
+        
+	bcm2835::pwm_set_data(pwm_channel, 800); //max 10% duty cycle calculated 600 but tested 800
+        bcm2835::delay(500);
+	
+	bcm2835::pwm_set_data(pwm_channel, 450);
+	bcm2835::delay(500);
     }
 
     bcm2835::close().unwrap();
