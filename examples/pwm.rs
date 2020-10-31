@@ -5,7 +5,7 @@
 // Connect an LED between GPIO18 (pin 12) and GND to observe the LED changing in brightness
 
 use bcm2835_rs as bcm2835;
-use bcm2835_rs::{RPiGPIO, GPIOFSel, PWMClockDivider};
+use bcm2835::{RPiGPIO, GPIOFSel, PWMClockDivider};
 
 fn main() {
     let init_status =  bcm2835::init();
@@ -24,7 +24,7 @@ fn main() {
     let pwm_channel = 0;
 
     // This controls the max range of the PWM signal
-    let range = 1024;
+    let range = 383;
 
     // Set the output pin to Alt Fun 5, to allow PWM channel 0 to be output there
     bcm2835::gpio_fsel(pin, GPIOFSel::Alt5);
@@ -43,15 +43,15 @@ fn main() {
     let mut data : i32 = 0;
 
     loop {
-        if data == 1 {
-            direction = 1; //Switch to increasing
-        }
-        else if data == (range - 1) as i32 {
-            direction = -1; //Switch to decreasing
-        }
+	if data == 1 {
+	    direction = 1;
+	}
+	else if data == (38 - 1) as i32 {
+	   direction = -1;
+	}
         data += direction;
-        bcm2825::pwm_set_data(pwm_channel, data as u32);
-        bcm2825::delay(1);
+        bcm2835::pwm_set_data(pwm_channel, data as u32);
+        bcm2835::delay(1);
     }
 
     bcm2835::close().unwrap();
