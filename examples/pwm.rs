@@ -24,7 +24,7 @@ fn main() {
     let pwm_channel = 0;
 
     // This controls the max range of the PWM signal
-    let range = 383;
+    let range = 1024;
 
     // Set the output pin to Alt Fun 5, to allow PWM channel 0 to be output there
     bcm2835::gpio_fsel(pin, GPIOFSel::Alt5);
@@ -33,20 +33,20 @@ fn main() {
     // With a divider of 16 and a RANGE of 1024, in MARKSPACE mode,
     // the pulse repetition frequency will be
     // 1.2MHz/1024 = 1171.875Hz, suitable for driving a DC motor with PWM
-    bcm2835::pwm_set_clock(PWMClockDivider::Divider1024);
+    bcm2835::pwm_set_clock(PWMClockDivider::Divider16);
     bcm2835::pwm_set_mode(pwm_channel, 1, 1);
     bcm2835::pwm_set_range(pwm_channel, range);
 
     // Vary the PWM m/s ratio between 1/RANGE and (RANGE-1)/RANGE
     // over the course of a a few seconds
     let mut direction : i32 = 1;
-    let mut data : i32 = 0;
+    let mut data : i32 = 100;
 
     loop {
 	if data == 1 {
 	    direction = 1;
 	}
-	else if data == (38 - 1) as i32 {
+	else if data == (range - 1) as i32 {
 	   direction = -1;
 	}
         data += direction;
