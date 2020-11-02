@@ -561,19 +561,19 @@ pub fn spi_transfer(value : u8) -> u8 {
     }
 }
 
-pub fn spi_transfernb(tbuf : &mut [i8], rbuf : &mut [i8]) {
+pub fn spi_transfernb(tbuf : &mut [u8], rbuf : &mut [u8]) {
     unsafe {
         bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf.as_mut_ptr(), tbuf.len() as u32);
     }
 }
 
-pub fn spi_transfern(buf : &mut [i8]) {
+pub fn spi_transfern(buf : &mut [u8]) {
     unsafe {
         bcm2835_spi_transfern(buf.as_mut_ptr(), buf.len() as u32);
     }
 }
 
-pub fn spi_writenb(buf : &[i8]) {
+pub fn spi_writenb(buf : &[u8]) {
     unsafe {
         bcm2835_spi_writenb(buf.as_ptr(), buf.len() as u32);
     }

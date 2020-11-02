@@ -22,23 +22,24 @@ fn main() {
 		_ => ()
 	}
 
-   	bcm2835::spi_set_bit_order(SPIBitOrder::LsbFirst);                  // The default
+    bcm2835::spi_set_bit_order(SPIBitOrder::LsbFirst);                  // The default
     bcm2835::spi_set_data_mode(SPIMode::Mode0);                         // The default
     bcm2835::spi_set_clock_divider(SPIClockDivider::Divider65536);      // The default
     bcm2835::spi_chip_select(SPIChipSelect::Cs0);                       // The default
     bcm2835::spi_set_chip_select_polarity(SPIChipSelect::Cs0, LOW);     // the default
 
-	// Send a byte to the slave and simultaneously read a byte back from the slave
+    // Send a byte to the slave and simultaneously read a byte back from the slave
     // If you tie MISO to MOSI, you should read back what was sent
     let send_data = 0x23;
     let read_data = bcm2835::spi_transfer(send_data);
+	
+    println!("Sent to SPI : {:?}", send_data);
+    println!("Read back from SPI: {:?}", read_data);
 
-	println!("Sent to SPI: {:?}. Read back from SPI: {:?}", send_data, read_data);
+    if send_data != read_data {
+	println!("Do you have the loopback from MOSI to MISO connected?");
+    }
 
-	if send_data != read_data {
-		println!("Do you have the loopback from MOSI to MISO connected?");
-	}
-
-	bcm2835::spi_end();
-	bcm2835::close().unwrap();
+    bcm2835::spi_end();
+    bcm2835::close().unwrap();
 }
