@@ -503,6 +503,7 @@ pub fn gpio_get_pud(pin : RPiGPIO) -> Option<PudControl> {
     }
 }
 
+//SPI
 pub fn spi_begin() -> Result<u8, u8> {
     unsafe {
         match bcm2835_spi_begin() {
@@ -554,25 +555,35 @@ pub fn spi_set_chip_select_polarity(cs : SPIChipSelect, active : u8) {
     }
 }
 
-pub fn spi_transfer(value : u8) -> u8{
+pub fn spi_transfer(value : u8) -> u8 {
     unsafe {
         bcm2835_spi_transfer(value)
     }
 }
 
-/*
-pub fn spi_transfernb(tbuf : &[u8]) -> String {
+pub fn spi_transfernb(tbuf : &mut [i8], rbuf : &mut [i8]) {
     unsafe {
-        let tbuf_raw = CString::new(tbuf).unwrap().into_raw();
-        let rbuf_raw = CString::new(tbuf).unwrap().into_raw();
-
-        bcm2835_spi_transfernb(tbuf_raw, rbuf_raw, tbuf.len() as u32);
-        let rbuf_cstr = CString::from_raw(rbuf_raw);
-
-        return rbuf_cstr.into_string().unwrap();
+        bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf.as_mut_ptr(), tbuf.len() as u32);
     }
 }
-*/
+
+pub fn spi_transfern(buf : &mut [i8]) {
+    unsafe {
+        bcm2835_spi_transfern(buf.as_mut_ptr(), buf.len() as u32);
+    }
+}
+
+pub fn spi_writenb(buf : &[i8]) {
+    unsafe {
+        bcm2835_spi_writenb(buf.as_ptr(), buf.len() as u32);
+    }
+}
+
+pub fn spi_write(data : u16) {
+    unsafe {
+        bcm2835_spi_write(data);
+    }
+}
 
 //PWM
 pub fn pwm_set_clock(divisor : PWMClockDivider) {
