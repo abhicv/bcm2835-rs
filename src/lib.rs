@@ -619,22 +619,26 @@ pub fn i2c_read(buf: &mut [u8], len: u32) -> Option<I2CReasonCode> {
 
 pub fn i2c_read_register_rs(regaddr: &mut [u8], buf: &mut [u8]) -> Option<I2CReasonCode> {
     unsafe {
-        let reason = bcm2835_i2c_read_register_rs(regaddr.as_mut_ptr(), buf.as_mut_ptr(), buf.len());
+        let reason =
+            bcm2835_i2c_read_register_rs(regaddr.as_mut_ptr(), buf.as_mut_ptr(), buf.len() as u32);
         I2CReasonCode::from_u8(reason)
     }
 }
 
 pub fn i2c_write_read_rs(cmds: &mut [u8], buf: &mut [u8]) -> Option<I2CReasonCode> {
     unsafe {
-        let reason = bcm2835_i2c_write_read_rs(cmds.as_mut_ptr(), cmds.len(), buf.as_mut_ptr(), buf.len());
+        let reason = bcm2835_i2c_write_read_rs(
+            cmds.as_mut_ptr(),
+            cmds.len() as u32,
+            buf.as_mut_ptr(),
+            buf.len() as u32,
+        );
         I2CReasonCode::from_u8(reason)
     }
 }
 
 pub fn st_read() -> u64 {
-    unsafe {
-        bcm2835_st_read()
-    }
+    unsafe { bcm2835_st_read() }
 }
 
 pub fn st_delay(offset_micros: u64, micros: u64) {
