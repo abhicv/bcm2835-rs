@@ -1,9 +1,8 @@
 use bcm2835_sys::*;
 use enum_primitive::*;
-use std::ffi::CString;
 
-pub const HIGH : u8 = 0x1;
-pub const LOW : u8 = 0x0;
+pub const HIGH: u8 = 0x1;
+pub const LOW: u8 = 0x0;
 
 enum_from_primitive! {
 #[derive(Debug, Copy, Clone, PartialEq)]
@@ -236,7 +235,7 @@ pub fn close() -> Result<u8, u8> {
 ///
 /// # Arguments
 /// * `debug` - 1 means debug
-pub fn set_debug(debug : u8) {
+pub fn set_debug(debug: u8) {
     unsafe {
         bcm2835_set_debug(debug);
     }
@@ -246,9 +245,7 @@ pub fn set_debug(debug : u8) {
 /// # Return
 /// the current library version number
 pub fn version() -> u32 {
-    unsafe {
-        bcm2835_version()
-    }
+    unsafe { bcm2835_version() }
 }
 
 /// Gets the base of a register
@@ -258,7 +255,7 @@ pub fn version() -> u32 {
 ///
 /// # Return
 /// the register base
-pub fn regbase(regbase : RegisterBase) -> &'static mut u32 {
+pub fn regbase(regbase: RegisterBase) -> &'static mut u32 {
     unsafe {
         let r = bcm2835_regbase(regbase as u8);
         return &mut *r;
@@ -274,229 +271,217 @@ pub fn regbase(regbase : RegisterBase) -> &'static mut u32 {
 ///
 /// # Return
 /// the value read from the 32 bit register
-pub fn peri_read(paddr : &mut u32) -> u32 {
-    unsafe {
-        bcm2835_peri_read(paddr)
-    }
+pub fn peri_read(paddr: &mut u32) -> u32 {
+    unsafe { bcm2835_peri_read(paddr) }
 }
 
-pub fn peri_read_nb(paddr : &mut u32) -> u32 {
-    unsafe {
-        bcm2835_peri_read_nb(paddr)
-    }
+pub fn peri_read_nb(paddr: &mut u32) -> u32 {
+    unsafe { bcm2835_peri_read_nb(paddr) }
 }
 
-pub fn peri_write(paddr : &mut u32, value : u32) {
+pub fn peri_write(paddr: &mut u32, value: u32) {
     unsafe {
         bcm2835_peri_write(paddr, value);
     }
 }
 
-pub fn peri_write_nb(paddr : &mut u32, value : u32) {
+pub fn peri_write_nb(paddr: &mut u32, value: u32) {
     unsafe {
         bcm2835_peri_write_nb(paddr, value);
     }
 }
 
-pub fn peri_set_bits(paddr : &mut u32, value : u32, mask : u32) {
+pub fn peri_set_bits(paddr: &mut u32, value: u32, mask: u32) {
     unsafe {
         bcm2835_peri_set_bits(paddr, value, mask);
     }
 }
 
-pub fn gpio_fsel(pin : RPiGPIO, mode : GPIOFSel) {
+pub fn gpio_fsel(pin: RPiGPIO, mode: GPIOFSel) {
     unsafe {
         bcm2835_gpio_fsel(pin as u8, mode as u8);
     }
 }
 
-pub fn gpio_set(pin : RPiGPIO) {
+pub fn gpio_set(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_set(pin as u8);
     }
 }
 
-pub fn gpio_clr(pin : RPiGPIO) {
+pub fn gpio_clr(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr(pin as u8);
     }
 }
 
-pub fn gpio_set_multi(mask : u32) {
+pub fn gpio_set_multi(mask: u32) {
     unsafe {
         bcm2835_gpio_set_multi(mask);
     }
 }
 
-pub fn gpio_clr_multi(mask : u32) {
+pub fn gpio_clr_multi(mask: u32) {
     unsafe {
         bcm2835_gpio_clr_multi(mask);
     }
 }
 
-pub fn gpio_lev(pin : RPiGPIO) -> u8 {
-    unsafe {
-        bcm2835_gpio_lev(pin as u8)
-    }
+pub fn gpio_lev(pin: RPiGPIO) -> u8 {
+    unsafe { bcm2835_gpio_lev(pin as u8) }
 }
 
-pub fn gpio_eds(pin : RPiGPIO) -> u8 {
-    unsafe {
-        bcm2835_gpio_eds(pin as u8)
-    }
+pub fn gpio_eds(pin: RPiGPIO) -> u8 {
+    unsafe { bcm2835_gpio_eds(pin as u8) }
 }
 
-pub fn gpio_eds_multi(mask : u32) -> u32 {
-    unsafe {
-        bcm2835_gpio_eds_multi(mask)
-    }
+pub fn gpio_eds_multi(mask: u32) -> u32 {
+    unsafe { bcm2835_gpio_eds_multi(mask) }
 }
 
-pub fn gpio_set_eds(pin : RPiGPIO) {
+pub fn gpio_set_eds(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_set_eds(pin as u8);
     }
 }
 
-pub fn gpio_set_eds_multi(mask : u32) {
+pub fn gpio_set_eds_multi(mask: u32) {
     unsafe {
         bcm2835_gpio_set_eds_multi(mask);
     }
 }
 
-pub fn gpio_ren(pin : RPiGPIO) {
+pub fn gpio_ren(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_ren(pin as u8);
     }
 }
 
-pub fn gpio_clr_ren(pin : RPiGPIO) {
+pub fn gpio_clr_ren(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_ren(pin as u8);
     }
 }
 
-pub fn gpio_fen(pin : RPiGPIO) {
+pub fn gpio_fen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_fen(pin as u8);
     }
 }
 
-pub fn gpio_clr_fen(pin : RPiGPIO) {
+pub fn gpio_clr_fen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_fen(pin as u8);
     }
 }
 
-pub fn gpio_hen(pin : RPiGPIO) {
+pub fn gpio_hen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_hen(pin as u8);
     }
 }
 
-pub fn gpio_clr_hen(pin : RPiGPIO) {
+pub fn gpio_clr_hen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_hen(pin as u8);
     }
 }
 
-pub fn gpio_len(pin : RPiGPIO) {
+pub fn gpio_len(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_len(pin as u8);
     }
 }
 
-pub fn gpio_clr_len(pin : RPiGPIO) {
+pub fn gpio_clr_len(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_len(pin as u8);
     }
 }
 
-pub fn gpio_aren(pin : RPiGPIO) {
+pub fn gpio_aren(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_aren(pin as u8);
     }
 }
 
-pub fn gpio_clr_aren(pin : RPiGPIO) {
+pub fn gpio_clr_aren(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_aren(pin as u8);
     }
 }
 
-pub fn gpio_afen(pin : RPiGPIO) {
+pub fn gpio_afen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_afen(pin as u8);
     }
 }
 
-pub fn gpio_clr_afen(pin : RPiGPIO) {
+pub fn gpio_clr_afen(pin: RPiGPIO) {
     unsafe {
         bcm2835_gpio_clr_afen(pin as u8);
     }
 }
 
-pub fn gpio_pud(pud : PudControl) {
+pub fn gpio_pud(pud: PudControl) {
     unsafe {
         bcm2835_gpio_pud(pud as u8);
     }
 }
 
-pub fn gpio_pudclk(pin : RPiGPIO, on : u8) {
+pub fn gpio_pudclk(pin: RPiGPIO, on: u8) {
     unsafe {
         bcm2835_gpio_pudclk(pin as u8, on);
     }
 }
 
-pub fn gpio_pad(group : PadGroup) -> u32 {
-    unsafe {
-        bcm2835_gpio_pad(group as u8)
-    }
+pub fn gpio_pad(group: PadGroup) -> u32 {
+    unsafe { bcm2835_gpio_pad(group as u8) }
 }
 
-pub fn gpio_set_pad(group : PadGroup, control : u32) {
+pub fn gpio_set_pad(group: PadGroup, control: u32) {
     unsafe {
         bcm2835_gpio_set_pad(group as u8, control);
     }
 }
 
-pub fn delay(millis : u32) {
+pub fn delay(millis: u32) {
     unsafe {
         bcm2835_delay(millis);
     }
 }
 
-pub fn delay_microseconds(micros : u64) {
+pub fn delay_microseconds(micros: u64) {
     unsafe {
         bcm2835_delayMicroseconds(micros);
     }
 }
 
-pub fn gpio_write(pin : RPiGPIO, on : u8) {
+pub fn gpio_write(pin: RPiGPIO, on: u8) {
     unsafe {
         bcm2835_gpio_write(pin as u8, on);
     }
 }
 
-pub fn gpio_write_multi(mask : u32 , on : u8) {
+pub fn gpio_write_multi(mask: u32, on: u8) {
     unsafe {
-        bcm2835_gpio_write_multi(mask , on);
+        bcm2835_gpio_write_multi(mask, on);
     }
 }
 
-pub fn gpio_write_mask(value : u32, mask : u32) {
+pub fn gpio_write_mask(value: u32, mask: u32) {
     unsafe {
         bcm2835_gpio_write_mask(value, mask);
     }
 }
 
-pub fn gpio_set_pud(pin : RPiGPIO, pud : PudControl) {
+pub fn gpio_set_pud(pin: RPiGPIO, pud: PudControl) {
     unsafe {
         bcm2835_gpio_set_pud(pin as u8, pud as u8);
     }
 }
 
-pub fn gpio_get_pud(pin : RPiGPIO) -> Option<PudControl> {
+pub fn gpio_get_pud(pin: RPiGPIO) -> Option<PudControl> {
     unsafe {
         let pud = bcm2835_gpio_get_pud(pin as u8);
         PudControl::from_u8(pud)
@@ -519,95 +504,166 @@ pub fn spi_end() {
     }
 }
 
-pub fn spi_set_bit_order(order : SPIBitOrder) {
+pub fn spi_set_bit_order(order: SPIBitOrder) {
     unsafe {
         bcm2835_spi_setBitOrder(order as u8);
     }
 }
 
-pub fn spi_set_clock_divider(divider : SPIClockDivider) {
+pub fn spi_set_clock_divider(divider: SPIClockDivider) {
     unsafe {
         bcm2835_spi_setClockDivider(divider as u16);
     }
 }
 
-pub fn spi_set_speed_hz(speed_hz : u32) {
+pub fn spi_set_speed_hz(speed_hz: u32) {
     unsafe {
         bcm2835_spi_set_speed_hz(speed_hz);
     }
 }
 
-pub fn spi_set_data_mode(mode : SPIMode) {
+pub fn spi_set_data_mode(mode: SPIMode) {
     unsafe {
         bcm2835_spi_setDataMode(mode as u8);
     }
 }
 
-pub fn spi_chip_select(cs : SPIChipSelect) {
+pub fn spi_chip_select(cs: SPIChipSelect) {
     unsafe {
         bcm2835_spi_chipSelect(cs as u8);
     }
 }
 
-pub fn spi_set_chip_select_polarity(cs : SPIChipSelect, active : u8) {
+pub fn spi_set_chip_select_polarity(cs: SPIChipSelect, active: u8) {
     unsafe {
         bcm2835_spi_setChipSelectPolarity(cs as u8, active);
     }
 }
 
-pub fn spi_transfer(value : u8) -> u8 {
-    unsafe {
-        bcm2835_spi_transfer(value)
-    }
+pub fn spi_transfer(value: u8) -> u8 {
+    unsafe { bcm2835_spi_transfer(value) }
 }
 
-pub fn spi_transfernb(tbuf : &mut [u8], rbuf : &mut [u8]) {
+//TODO(abhicv): Now rbuf is owned by the caller. Make it return a u8 array without rbuf as an argument
+pub fn spi_transfernb(tbuf: &mut [u8], rbuf: &mut [u8]) {
     unsafe {
         bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf.as_mut_ptr(), tbuf.len() as u32);
     }
 }
 
-pub fn spi_transfern(buf : &mut [u8]) {
+pub fn spi_transfern(buf: &mut [u8]) {
     unsafe {
         bcm2835_spi_transfern(buf.as_mut_ptr(), buf.len() as u32);
     }
 }
 
-pub fn spi_writenb(buf : &[u8]) {
+pub fn spi_writenb(buf: &[u8]) {
     unsafe {
         bcm2835_spi_writenb(buf.as_ptr(), buf.len() as u32);
     }
 }
 
-pub fn spi_write(data : u16) {
+pub fn spi_write(data: u16) {
     unsafe {
         bcm2835_spi_write(data);
     }
 }
 
+//I2C
+pub fn i2c_begin() -> Result<u8, u8> {
+    unsafe {
+        match bcm2835_spi_begin() {
+            0 => Err(0),
+            _ => Ok(1),
+        }
+    }
+}
+
+pub fn i2c_end() {
+    unsafe {
+        bcm2835_i2c_end();
+    }
+}
+
+pub fn i2c_setSlaveAddress(addr: u8) {
+    unsafe {
+        bcm2835_i2c_setSlaveAddress(addr);
+    }
+}
+
+pub fn i2c_setClockDivider(divider: I2CClockDivider) {
+    unsafe {
+        bcm2835_i2c_setClockDivider(divider as u16);
+    }
+}
+
+pub fn i2c_set_baudrate(baudrate: u32) {
+    unsafe {
+        bcm2835_i2c_set_baudrate(baudrate);
+    }
+}
+
+pub fn i2c_write(buf: &[u8]) -> Option<I2CReasonCode> {
+    unsafe {
+        let reason = bcm2835_i2c_write(buf.as_ptr(), buf.len() as u32);
+        I2CReasonCode::from_u8(reason)
+    }
+}
+
+pub fn i2c_read(buf: &mut [u8], len: u32) -> Option<I2CReasonCode> {
+    unsafe {
+        let reason = bcm2835_i2c_read(buf.as_mut_ptr(), buf.len() as u32);
+        I2CReasonCode::from_u8(reason)
+    }
+}
+
+pub fn i2c_read_register_rs(regaddr: &mut [u8], buf: &mut [u8]) -> Option<I2CReasonCode> {
+    unsafe {
+        let reason = bcm2835_i2c_read_register_rs(regaddr.as_mut_ptr(), buf.as_mut_ptr(), buf.len());
+        I2CReasonCode::from_u8(reason)
+    }
+}
+
+pub fn i2c_write_read_rs(cmds: &mut [u8], buf: &mut [u8]) -> Option<I2CReasonCode> {
+    unsafe {
+        let reason = bcm2835_i2c_write_read_rs(cmds.as_mut_ptr(), cmds.len(), buf.as_mut_ptr(), buf.len());
+        I2CReasonCode::from_u8(reason)
+    }
+}
+
+pub fn st_read() -> u64 {
+    unsafe {
+        bcm2835_st_read()
+    }
+}
+
+pub fn st_delay(offset_micros: u64, micros: u64) {
+    unsafe {
+        bcm2835_st_delay(offset_micros, micros);
+    }
+}
+
 //PWM
-pub fn pwm_set_clock(divisor : PWMClockDivider) {
+pub fn pwm_set_clock(divisor: PWMClockDivider) {
     unsafe {
         bcm2835_pwm_set_clock(divisor as u32);
     }
 }
 
-pub fn pwm_set_mode(channel : u8, markspace : u8, enabled : u8) {
+pub fn pwm_set_mode(channel: u8, markspace: u8, enabled: u8) {
     unsafe {
         bcm2835_pwm_set_mode(channel, markspace, enabled);
     }
 }
 
-pub fn pwm_set_range(channel : u8, range : u32) {
+pub fn pwm_set_range(channel: u8, range: u32) {
     unsafe {
         bcm2835_pwm_set_range(channel, range);
     }
 }
 
-pub fn pwm_set_data(channel : u8, data : u32) {
+pub fn pwm_set_data(channel: u8, data: u32) {
     unsafe {
         bcm2835_pwm_set_data(channel, data);
     }
 }
-
-

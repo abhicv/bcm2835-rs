@@ -1,15 +1,15 @@
+use bcm2835::{GPIOFSel, PWMClockDivider, RPiGPIO};
 use bcm2835_rs as bcm2835;
-use bcm2835::{RPiGPIO, GPIOFSel, PWMClockDivider};
 
 //NOTE(abhicv): Connect an servo signal pin to GPIO18 (pin 12)
 fn main() {
-    let init_status =  bcm2835::init();
-	match init_status {
-		Err(0) => {
-			panic!("bcm2835 initialization failed");
-		},
-		_ => ()
-	}
+    let init_status = bcm2835::init();
+    match init_status {
+        Err(0) => {
+            panic!("bcm2835 initialization failed");
+        }
+        _ => (),
+    }
 
     // PWM output on RPi Plug P1 pin 12 (which is GPIO pin 18) in alt fun 5.
     let pin = RPiGPIO::Pin12;
@@ -35,14 +35,14 @@ fn main() {
         bcm2835::pwm_set_data(pwm_channel, 100); //min 5% duty cycle calculated 200 but tested 100
         bcm2835::delay(500);
 
-	bcm2835::pwm_set_data(pwm_channel, 450); //mid 7.5% duty cycle calculated and tested same
+        bcm2835::pwm_set_data(pwm_channel, 450); //mid 7.5% duty cycle calculated and tested same
         bcm2835::delay(500);
 
-	bcm2835::pwm_set_data(pwm_channel, 800); //max 10% duty cycle calculated 600 but tested 800
+        bcm2835::pwm_set_data(pwm_channel, 800); //max 10% duty cycle calculated 600 but tested 800
         bcm2835::delay(500);
 
-	bcm2835::pwm_set_data(pwm_channel, 450);
-	bcm2835::delay(500);
+        bcm2835::pwm_set_data(pwm_channel, 450);
+        bcm2835::delay(500);
     }
 
     bcm2835::close().unwrap();

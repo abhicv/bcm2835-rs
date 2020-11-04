@@ -1,21 +1,19 @@
 //  Based on PWM example program for bcm2835 library by Mike McCauley
 //  https://www.airspayce.com/mikem/bcm2835/pwm_8c-example.html
 
-
 // Connect an LED between GPIO18 (pin 12) and GND to observe the LED changing in brightness
 
+use bcm2835::{GPIOFSel, PWMClockDivider, RPiGPIO};
 use bcm2835_rs as bcm2835;
-use bcm2835::{RPiGPIO, GPIOFSel, PWMClockDivider};
 
 fn main() {
-    let init_status =  bcm2835::init();
-	match init_status {
-		Err(0) => {
-			panic!("bcm2835 initialization failed");
-		},
-		_ => ()
-	}
-
+    let init_status = bcm2835::init();
+    match init_status {
+        Err(0) => {
+            panic!("bcm2835 initialization failed");
+        }
+        _ => (),
+    }
 
     // PWM output on RPi Plug P1 pin 12 (which is GPIO pin 18) in alt fun 5.
     let pin = RPiGPIO::Pin12;
@@ -39,16 +37,15 @@ fn main() {
 
     // Vary the PWM m/s ratio between 1/RANGE and (RANGE-1)/RANGE
     // over the course of a a few seconds
-    let mut direction : i32 = 1;
-    let mut data : i32 = 100;
+    let mut direction: i32 = 1;
+    let mut data: i32 = 100;
 
     loop {
-	if data == 1 {
-	    direction = 1;
-	}
-	else if data == (range - 1) as i32 {
-	   direction = -1;
-	}
+        if data == 1 {
+            direction = 1;
+        } else if data == (range - 1) as i32 {
+            direction = -1;
+        }
         data += direction;
         bcm2835::pwm_set_data(pwm_channel, data as u32);
         bcm2835::delay(1);
