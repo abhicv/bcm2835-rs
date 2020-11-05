@@ -1,5 +1,6 @@
 use bcm2835_sys::*;
 use enum_primitive::*;
+use std::vec::Vec;
 
 pub const HIGH: u8 = 0x1;
 pub const LOW: u8 = 0x0;
@@ -544,10 +545,11 @@ pub fn spi_transfer(value: u8) -> u8 {
     unsafe { bcm2835_spi_transfer(value) }
 }
 
-//TODO(abhicv): Now rbuf is owned by the caller. Make it return a u8 array without rbuf as an argument
-pub fn spi_transfernb(tbuf: &mut [u8], rbuf: &mut [u8]) {
+pub fn spi_transfernb(tbuf: &mut [u8]) -> Vec<u8> {
     unsafe {
-        bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf.as_mut_ptr(), tbuf.len() as u32);
+        let rbuf_vec : Vec<u8> = Vec::with_capacity(tbuf.len());
+        bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf_vec.as_mut_ptr(), tbuf.len() as u32);
+        rbuf_vec
     }
 }
 
@@ -619,8 +621,7 @@ pub fn i2c_read(buf: &mut [u8], len: u32) -> Option<I2CReasonCode> {
 
 pub fn i2c_read_register_rs(regaddr: &mut [u8], buf: &mut [u8]) -> Option<I2CReasonCode> {
     unsafe {
-        let reason =
-            bcm2835_i2c_read_register_rs(regaddr.as_mut_ptr(), buf.as_mut_ptr(), buf.len() as u32);
+        let reason = bcm2835_i2c_read_register_rs(regaddr.as_mut_ptr(), buf.as_mut_ptr(), buf.len() as u32);
         I2CReasonCode::from_u8(reason)
     }
 }
