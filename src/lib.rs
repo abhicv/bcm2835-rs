@@ -511,9 +511,9 @@ pub fn spi_set_bit_order(order: SPIBitOrder) {
     }
 }
 
-pub fn spi_set_clock_divider<T>(divider: T) where T : Into<u16> {
+pub fn spi_set_clock_divider(divider: SPIClockDivider){
     unsafe {
-        bcm2835_spi_setClockDivider(divider.into());
+        bcm2835_spi_setClockDivider(divider as u16);
     }
 }
 
@@ -547,7 +547,7 @@ pub fn spi_transfer(value: u8) -> u8 {
 
 pub fn spi_transfernb(tbuf: &mut [u8]) -> Vec<u8> {
     unsafe {
-        let rbuf_vec : Vec<u8> = Vec::with_capacity(tbuf.len());
+        let mut rbuf_vec : Vec<u8> = Vec::with_capacity(tbuf.len());
         bcm2835_spi_transfernb(tbuf.as_mut_ptr(), rbuf_vec.as_mut_ptr(), tbuf.len() as u32);
         rbuf_vec
     }
@@ -587,15 +587,15 @@ pub fn i2c_end() {
     }
 }
 
-pub fn i2c_setSlaveAddress(addr: u8) {
+pub fn i2c_set_slave_address(addr: u8) {
     unsafe {
         bcm2835_i2c_setSlaveAddress(addr);
     }
 }
 
-pub fn i2c_setClockDivider<T>(divider: T) where T : Into<u16> {
+pub fn i2c_set_clock_divider(divider: I2CClockDivider) {
     unsafe {
-        bcm2835_i2c_setClockDivider(divider.into());
+        bcm2835_i2c_setClockDivider(divider as u16);
     }
 }
 
@@ -612,7 +612,7 @@ pub fn i2c_write(buf: &[u8]) -> Option<I2CReasonCode> {
     }
 }
 
-pub fn i2c_read(buf: &mut [u8], len: u32) -> Option<I2CReasonCode> {
+pub fn i2c_read(buf: &mut [u8]) -> Option<I2CReasonCode> {
     unsafe {
         let reason = bcm2835_i2c_read(buf.as_mut_ptr(), buf.len() as u32);
         I2CReasonCode::from_u8(reason)
@@ -649,9 +649,9 @@ pub fn st_delay(offset_micros: u64, micros: u64) {
 }
 
 //PWM
-pub fn pwm_set_clock<T>(divisor: T) where T : Into<u32> {
+pub fn pwm_set_clock(divisor: PWMClockDivider) {
     unsafe {
-        bcm2835_pwm_set_clock(divisor.into());
+        bcm2835_pwm_set_clock(divisor as u32);
     }
 }
 

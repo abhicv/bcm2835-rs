@@ -44,6 +44,6 @@ fn main() {
         bcm2835::pwm_set_data(pwm_channel, 450);
         bcm2835::delay(500);
     }
-
+    
     bcm2835::close().unwrap();
 }
