@@ -511,9 +511,9 @@ pub fn spi_set_bit_order(order: SPIBitOrder) {
     }
 }
 
-pub fn spi_set_clock_divider(divider: SPIClockDivider) {
+pub fn spi_set_clock_divider<T>(divider: T) where T : Into<u16> {
     unsafe {
-        bcm2835_spi_setClockDivider(divider as u16);
+        bcm2835_spi_setClockDivider(divider.into());
     }
 }
 
@@ -593,9 +593,9 @@ pub fn i2c_setSlaveAddress(addr: u8) {
     }
 }
 
-pub fn i2c_setClockDivider(divider: I2CClockDivider) {
+pub fn i2c_setClockDivider<T>(divider: T) where T : Into<u16> {
     unsafe {
-        bcm2835_i2c_setClockDivider(divider as u16);
+        bcm2835_i2c_setClockDivider(divider.into());
     }
 }
 
@@ -649,9 +649,9 @@ pub fn st_delay(offset_micros: u64, micros: u64) {
 }
 
 //PWM
-pub fn pwm_set_clock(divisor: PWMClockDivider) {
+pub fn pwm_set_clock<T>(divisor: T) where T : Into<u32> {
     unsafe {
-        bcm2835_pwm_set_clock(divisor as u32);
+        bcm2835_pwm_set_clock(divisor.into());
     }
 }
 
